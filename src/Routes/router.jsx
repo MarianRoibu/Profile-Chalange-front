@@ -1,11 +1,11 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Login, HomePage, Register, ProfilePage,} from "../UI/pages/users";
+import { Login, HomePage, Register, ProfilePage, UserEdit} from "../UI/pages/users";
 import PrivateRoutes from "./RouteTypes";
 
 
 const router = createBrowserRouter([
     {
-      path: '/login',
+      path: '/',
       element: <Login />
     },
     {
@@ -13,13 +13,18 @@ const router = createBrowserRouter([
       element: <Register />
     },    
     {
-      path: '/',
-      element: <HomePage />
+      path: '/home',
+      element: <PrivateRoutes>  <HomePage /> </PrivateRoutes>
     },
 
     {
       path: '/profile',
       element: <PrivateRoutes><ProfilePage /></PrivateRoutes>
+    },
+
+    {
+      path: '/edit',
+      element: <PrivateRoutes><UserEdit /></PrivateRoutes>
     },
   ]);
   

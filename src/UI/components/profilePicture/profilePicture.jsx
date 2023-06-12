@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { store } from "../../../utils/store";
+import { useSelector } from "react-redux";
 
 
 const Button = styled.button`
@@ -23,7 +24,7 @@ const ProfileImage = styled.img`
 `;
 
 const ProfileButton = () => {
-  const user = store.getState().user.data;
+  const user = useSelector((state) => state.user.data);
   console.log(user);
   if (!user || !user.img) {
     return (

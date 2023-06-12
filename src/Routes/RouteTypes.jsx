@@ -20,7 +20,7 @@ const PrivateRoutes = ({ children }) => {
                     navigate(window.location.pathname || '/');
                     return;
                 }
-                navigate("/");
+                navigate("/home");
                 break;
             default:
                 navigate('/register');
@@ -50,7 +50,7 @@ const PrivateRoutes = ({ children }) => {
                     children
 
                     :
-                    navigate('/')
+                    navigate('/home')
             )
     )
 }

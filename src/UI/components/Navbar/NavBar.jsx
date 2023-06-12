@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useAuth0 } from '@auth0/auth0-react';
 import ProfileButton from "../profilePicture/profilePicture";
 import { store } from "../../../utils/store";
+import { useSelector } from "react-redux";
+import { GlobalStyle } from "../../pages/users/Styles/Users/config";
 
 
 
@@ -10,8 +12,8 @@ const NavbarContainer = styled.nav`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #6441a5;
-  height: 70px;
+  background-color: #d3d6db; 
+  height: 50px; 
 `;
 
 const Logo = styled.a`
@@ -19,6 +21,7 @@ const Logo = styled.a`
   font-weight: bold;
   color: #ffffff;
   text-decoration: none;
+  margin-left: 4vh;
 `;
 
 const NavLinks = styled.ul`
@@ -26,7 +29,7 @@ const NavLinks = styled.ul`
   list-style: none;
   justify-content: space-between;
   margin-top: 0;
-
+  
   @media (max-width: 768px) {
     margin-top: 5vh;
     & > :first-child {
@@ -43,7 +46,6 @@ const NavLinks = styled.ul`
 const NavLink = styled.li`
   font-size: 1.5rem;
   margin-right: 2vh;
-
   &:first-child {
     margin-right: 20vh;
 
@@ -83,45 +85,36 @@ const Button = styled.button`
   }
 `;
 
-const Search = styled.div`
-  position: relative;
-  margin-top: 0vh;
-  left: -10vh;
-
-  @media (max-width: 768px) {
-    margin-top: 12vh;
-    margin-left: 1vh;
-  }
-`;
-
 const AuthButtons = styled.div`
   display: flex;
 `;
 
 const Navbar = () => {
   const { loginWithRedirect, isAuthenticated } = useAuth0();
-  const user = store.getState().user.data;
+  const user = useSelector((state) => state.user.data);
 
   console.log(user);
 
   return (
+    <>
+    <GlobalStyle />
     <NavbarContainer>
-      <Logo href="/">Home</Logo>
+      <Logo href="/home">Home</Logo>
       <NavLinks>
         {!isAuthenticated ? (
           <AuthButtons>
             <Button onClick={loginWithRedirect}>Login</Button>
           </AuthButtons>
         ) : (
-            <>    
-          <NavLink>
-            <ProfileButton />
-          </NavLink>
-           
+          <>
+            <NavLink>
+              <ProfileButton />
+            </NavLink>
           </>
         )}
       </NavLinks>
     </NavbarContainer>
+    </>
   );
 };
 

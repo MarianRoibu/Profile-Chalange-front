@@ -105,67 +105,64 @@ const Input = styled.input`
 `;
 
 function Register() {
-    const navigate = useNavigate();
-    const { user, getAccessTokenSilently, isLoading: isLoadingUser } = useAuth0();
-  
-    const [error, setError] = useState({ status: "unset", msg: "" });
-  
-    
-  
-    const [userData, setUserData] = useState({
-      name: user?.name || "",
-      email: user?.email,
-      picture: user?.picture || "",
-      sub: user?.sub,
-      username: ""
+  const navigate = useNavigate();
+  const { user, getAccessTokenSilently, isLoading: isLoadingUser } = useAuth0();
+
+  const [error, setError] = useState({ status: "unset", msg: "" });
+
+  const [userData, setUserData] = useState({
+    name: user?.name || "",
+    email: user?.email,
+    picture: user?.picture || "",
+    sub: user?.sub,
+    username: ""
+  });
+
+  const handleUsername = (ev) => {
+    if (ev.nativeEvent.data === "-" && userData.username.includes("-")) {
+      return;
+    }
+
+    const regex = /[^a-z0-9-]/g;
+
+    const username = ev.target.value.replace(regex, "");
+
+    setUserData({
+      ...userData,
+      username: username
     });
-  
-    const handleUsername = (ev) => {
-      if (ev.nativeEvent.data === "-" && userData.username.includes("-")) {
-        return;
-      }
-  
-      const regex = /[^a-z0-9-]/g;
-  
-      const username = ev.target.value.replace(regex, "");
-  
-      setUserData({
-        ...userData,
-        username: username
-      });
-    };
-  
-    const handleSubmit = async (ev) => {
-      ev.preventDefault();
-  
-  
-      const token = await getAccessTokenSilently();
-  
-      const createUser = await postUser(userData, token);
-  
-      console.log(createUser);
-  
-      if (createUser.status) {
-        setError(createUser);
-        return;
-      }
-  
-      store.dispatch(ADD_DATA_USER(createUser));
-  
-      navigate("/");
-    };
-  
-    return isLoadingUser ? (
-      <Skeleton />
-    ) : (
-      <Container>
+  };
+
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+
+    const token = await getAccessTokenSilently();
+
+    const createUser = await postUser(userData, token, user?.password); // Pass the password
+
+    console.log(createUser);
+
+    if (createUser.status) {
+      setError(createUser);
+      return;
+    }
+
+    store.dispatch(ADD_DATA_USER(createUser));
+
+    navigate("/home");
+  };
+
+  return isLoadingUser ? (
+    <Skeleton />
+  ) : (
+    <Container>
       <Form onSubmit={handleSubmit}>
         <SectionText>
           <h1>Hi {user?.name?.split(" ")[0]}!</h1>
           <p>Tell us a little about you</p>
         </SectionText>
         <ContainerInputs>
-          <label htmlFor="username">Write your Username</label> <br/>
+          <label htmlFor="username">Write your Username</label> <br />
           <Input
             id="username"
             type="text"
@@ -184,7 +181,7 @@ function Register() {
         </ContainerFinishButton>
       </Form>
     </Container>
-    );
-  }
-  
+  );
+}
+
   export { Register };
